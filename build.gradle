@@ -1,0 +1,27 @@
+plugins {
+    id 'application'
+    id 'java'
+}
+
+group 'org.atelier'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/net.dv8tion/JDA
+    implementation 'net.dv8tion:JDA:5.0.0-alpha.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+}
+
+application{
+    mainClass='com.atelier.sunny.Bot'
+}
+
+test {
+    useJUnitPlatform()
+}
