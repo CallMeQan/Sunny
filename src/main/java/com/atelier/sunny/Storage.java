@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public enum Storage {
     INSTANCE;
@@ -28,7 +29,7 @@ public enum Storage {
      */
     public void updateGuild(Guild guild){
         for (BasicInformation guildInfo: guilds) {
-            if (guildInfo.id() == guild.getId()){
+            if (Objects.equals(guildInfo.id(), guild.getId())){
                 guilds.set(guilds.indexOf(guildInfo), new BasicInformation(guild.getId(), guild.getName(), guild.getSystemChannel().getId()));
                 return;
             }
