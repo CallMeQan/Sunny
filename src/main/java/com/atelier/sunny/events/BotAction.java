@@ -1,28 +1,43 @@
 package com.atelier.sunny.events;
 
-import com.atelier.sunny.Bot;
+import com.atelier.sunny.Storage;
+import com.atelier.sunny.event.EventManager;
+import com.atelier.sunny.models.ServerSchedule;
 import net.dv8tion.jda.api.events.DisconnectEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Timer;
 
 public class BotAction extends ListenerAdapter {
-    private final Logger logger = LogManager.getLogger(BotAction.class);
-    private final Timer timer = new Timer();
+    private final Logger logger = LoggerFactory.getLogger(BotAction.class);
+
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         super.onReady(event);
+        Storage.INSTANCE.updateGuilds();
+        setupTimer();
+        EventManager.startAllTimer();
         logger.info("Bot is ready");
-        System.out.println("Bot is ready");
-        //timer.schedule(new AutoMessage(), 0, 300000);
+    }
+
+    private void setupTimer() {
+        for (Storage.BasicInformation info: Storage.INSTANCE.getGuilds()) {
+            EventManager.addTimer(new ServerSchedule(info));
+            logger.info("Added "+info.name()+" to timer task");
+        }
     }
 
     @Override
     public void onDisconnect(@NotNull DisconnectEvent event) {
         super.onDisconnect(event);
+    }
+
+    @Override
+    public void onShutdown(@NotNull ShutdownEvent event) {
+        super.onShutdown(event);
     }
 }

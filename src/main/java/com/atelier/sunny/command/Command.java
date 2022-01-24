@@ -1,4 +1,4 @@
-package com.atelier.sunny.models;
+package com.atelier.sunny.command;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

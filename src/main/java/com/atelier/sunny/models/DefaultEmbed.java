@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import java.awt.*;
 
 public final class DefaultEmbed {
-    public static final MessageEmbed MORNING(MessageAction msg){
+    public static MessageEmbed MORNING(){
         return new EmbedBuilder()
                 .setTitle("**Chào buổi sáng vui vẻ nha mọi người! UwU**")
                 .setColor(new Color(7455988))
@@ -16,7 +16,7 @@ public final class DefaultEmbed {
                 .setAuthor("AtelierSMP", "https://discord.gg/ateliermc", "https://cdn.discordapp.com/embed/avatars/0.png")
                 .build();
     }
-    public static final MessageEmbed AFTERNOON(String ext){
+    public static MessageEmbed AFTERNOON(){
 
         return new EmbedBuilder()
                 .setTitle("**Chào buổi trưa nắng nóng! UwU**")
@@ -25,7 +25,7 @@ public final class DefaultEmbed {
                 .setAuthor("AtelierSMP", "https://discord.gg/ateliermc", "https://cdn.discordapp.com/embed/avatars/0.png")
                 .build();
     }
-    public static final MessageEmbed NIGHT(String ext){
+    public static MessageEmbed NIGHT(){
         return new EmbedBuilder()
                 .setTitle("**Buổi tối vui vẻ nha mọi người! UwU**")
                 .setColor(new Color(7455988))

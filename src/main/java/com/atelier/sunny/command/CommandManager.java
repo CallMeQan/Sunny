@@ -1,23 +1,19 @@
 package com.atelier.sunny.command;
 
 import com.atelier.sunny.Bot;
-import com.atelier.sunny.commands.SetCommand;
-import com.atelier.sunny.models.Command;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.internal.utils.PermissionUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 
 public class CommandManager {
     private final CommandList cmdList = new CommandList();
     private String PREFIX = Bot.PREFIX;
     private JDA jda;
-    private Logger logger = LogManager.getLogger(CommandManager.class);
+    private Logger logger = LoggerFactory.getLogger(CommandManager.class);
 
     public void process(JDA jda, MessageReceivedEvent event) {
         this.jda = jda;
