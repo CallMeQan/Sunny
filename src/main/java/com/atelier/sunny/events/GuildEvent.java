@@ -1,5 +1,8 @@
 package com.atelier.sunny.events;
 
+import com.atelier.sunny.Storage;
+import com.atelier.sunny.event.EventManager;
+import com.atelier.sunny.models.ServerSchedule;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
@@ -13,15 +16,23 @@ public class GuildEvent extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        Guild guild = event.getGuild();
-        logger.info("Bot join guild with id "+guild.getId());
+        String id = event.getGuild().getId();
+        Storage.INSTANCE.updateGuild(event.getGuild());
+
+        EventManager.addTimer(new ServerSchedule(Storage.INSTANCE.getGuildById(id)));
+        EventManager.startTimer(id);
+
+        logger.info("Bot join '"+event.getGuild().getName()+ "' with id " + id);
         super.onGuildJoin(event);
     }
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        Guild guild = event.getGuild();
-        logger.info("Left guild "+ guild.getName()+" with id "+guild.getId());
+        String id = event.getGuild().getId();
+        Storage.INSTANCE.updateGuild(event.getGuild());
+
+        EventManager.shutdownTask(id);
+        logger.info("Bot leave '"+event.getGuild().getName()+ "' with id " + id);
         super.onGuildLeave(event);
     }
 }

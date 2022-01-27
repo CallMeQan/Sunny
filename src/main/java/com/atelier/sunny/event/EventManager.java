@@ -28,6 +28,7 @@ public class EventManager {
     public static boolean shutdownTask(String id){
         for (BetterTimerTask task: timerTaskList) {
             if (id == task.getId()){
+                logger.info("Shutting down task with id " + task.getId());
                 return task.cancel();
             }
         }
@@ -39,7 +40,8 @@ public class EventManager {
     public static void startTimer(String id){
         for (BetterTimerTask task: timerTaskList) {
             if (id == task.getId()){
-                timerManager.scheduleAtFixedRate(task, milliseconds, milliseconds);
+                timerManager.scheduleAtFixedRate(task, 0, milliseconds);
+                logger.info("Task " + task.getId() + " had scheduled");
                 return;
             }
         }
@@ -47,7 +49,7 @@ public class EventManager {
 
     public static void startAllTimer(){
         for (BetterTimerTask task: timerTaskList) {
-            timerManager.scheduleAtFixedRate(task, milliseconds, milliseconds);
+            timerManager.scheduleAtFixedRate(task, 0, milliseconds);
             logger.info("Task " + task.getId() + " had scheduled");
         }
     }

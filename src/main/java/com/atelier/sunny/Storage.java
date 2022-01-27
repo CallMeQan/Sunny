@@ -29,7 +29,7 @@ public enum Storage {
      */
     public void updateGuild(Guild guild){
         for (BasicInformation guildInfo: guilds) {
-            if (Objects.equals(guildInfo.id(), guild.getId())){
+            if (guild.getId() == guildInfo.id){
                 guilds.set(guilds.indexOf(guildInfo), new BasicInformation(guild.getId(), guild.getName(), guild.getSystemChannel().getId()));
                 return;
             }
@@ -37,14 +37,25 @@ public enum Storage {
         guilds.add(new BasicInformation(guild.getId(), guild.getName(), guild.getSystemChannel().getId()));
     }
 
-    public Guild getGuildById(String id){
+    public void updateGuild(BasicInformation guildInfo){
+        for (BasicInformation info: guilds){
+            if (guildInfo.id == info.id){
+                guilds.set(guilds.indexOf(info), guildInfo);
+                return;
+            }
+        }
+        guilds.add(guildInfo);
+    }
+
+    public BasicInformation getGuildById(String id){
         for (BasicInformation guildInfo: guilds) {
-            if (guildInfo.id() == id) return bot.getGuildById(id); // Getting it normally if exist in List
+            if (guildInfo.id() == id) return guildInfo; // Getting it normally if exist in List
         }
         // Else add new information to list and return it
         Guild guild = bot.getGuildById(id);
-        guilds.add(new BasicInformation(guild.getId(), guild.getName(), guild.getSystemChannel().getId()));
-        return guild;
+        BasicInformation info = new BasicInformation(guild.getId(), guild.getName(), guild.getSystemChannel().getId());
+        guilds.add(info);
+        return info;
     }
 
     public List<BasicInformation> getGuilds() {
@@ -52,7 +63,7 @@ public enum Storage {
     }
 
     public record BasicInformation(String id, String name, String channelId) {
-
+        public BasicInformation setChannelId(String newId) { return new BasicInformation(id, name, newId); }
     }
 
 }

@@ -33,11 +33,13 @@ public class BotAction extends ListenerAdapter {
 
     @Override
     public void onDisconnect(@NotNull DisconnectEvent event) {
+        EventManager.shutdownTimer();
         super.onDisconnect(event);
     }
 
     @Override
     public void onShutdown(@NotNull ShutdownEvent event) {
+        EventManager.shutdownTimer();
         super.onShutdown(event);
     }
 }
