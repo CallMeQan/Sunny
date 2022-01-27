@@ -10,7 +10,6 @@ import java.awt.*;
 
 public final class DefaultEmbed {
     public static MessageEmbed MORNING(Guild guild){
-
         return new EmbedBuilder()
                 .setTitle("Rise and shine! :atri:")
                 .setColor(new Color(4321431))
