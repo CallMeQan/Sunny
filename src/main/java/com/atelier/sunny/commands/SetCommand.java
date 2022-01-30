@@ -1,31 +1,40 @@
 package com.atelier.sunny.commands;
 
-import com.atelier.sunny.command.Command;
-import com.atelier.sunny.models.GuildDocument;
-import com.atelier.sunny.utils.DatabaseUtils;
-import com.atelier.sunny.utils.MentionUtil;
+import com.atelier.sunny.commands.sub.ChannelSetCommand;
+import com.atelier.sunny.commands.sub.ImageSetCommand;
+import com.atelier.sunny.manager.command.Command;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 import java.util.List;
-import java.util.Objects;
-
 
 public class SetCommand extends Command {
-    private final Logger logger = LoggerFactory.getLogger(SetCommand.class);
     public SetCommand() {
-        super("set", "Setting your server config", new String[]{"key", "value"}, Permission.ADMINISTRATOR);
+        super();
+        this.data = new CommandData("set", "Setting your server config")
+                .addSubcommands(
+                        new SubcommandData("channel", "Set the channel")
+                                .addOption(OptionType.CHANNEL, "channel", "Channel to send msg", true),
+                        new SubcommandData("image", "Set the Image")
+                                .addOption(OptionType.STRING, "img", "Image Url", true)
+                );
+        this.perms = List.of(Permission.ADMINISTRATOR);
     }
 
     @Override
-    public void run(MessageReceivedEvent event, String[] args) {
-        GuildDocument doc = GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()));
-        MessageChannel channel = event.getChannel();
-
+    public void run(SlashCommandEvent event) {
+        if (event.getSubcommandName().equals("channel")) {
+            new ChannelSetCommand().run(event);
+            return;
+        }
+        if (event.getSubcommandName().equals("image")) {
+            new ImageSetCommand().run(event);
+            return;
+        }
+        /*
         if (args.length < 1) return;
         if (Objects.equals(args[0], "channel") && args.length > 1 && MentionUtil.isChannelMention(args[1])) {
             doc.setChannelID(MentionUtil.getId(args[1])).update();
@@ -33,8 +42,8 @@ public class SetCommand extends Command {
             logger.info(doc.getGuildName() + " has changed their channel to "+args[1]);
             return;
         }else if (Objects.equals(args[0], "image") && args.length > 1){
-            List<Message.Attachment> attachments = event.getMessage().getAttachments();
-            if (attachments.size() < 1 || attachments.size() >= 2) {channel.sendMessage("Sorry we only take 1 image").complete(); return;}
+            List<Message.Attachment> attachments = event.getInteraction().
+            if (attachments.size() != 1) {channel.sendMessage("Sorry we only take 1 image").complete(); return;}
             Message.Attachment a = attachments.get(0);
 
             if (!a.isImage()) {channel.sendMessage("Invalid input").complete(); return;}
@@ -59,11 +68,6 @@ public class SetCommand extends Command {
                     channel.sendMessage("Invalid provided argument like `morning`, `afternoon` or `evening`");
                     return;
             }
-        }
-    }
-
-    @Override
-    public void printHelp(MessageReceivedEvent event) {
-
+        }*/
     }
 }

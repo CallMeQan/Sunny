@@ -1,7 +1,6 @@
-package com.atelier.sunny.events;
+package com.atelier.sunny;
 
-import com.atelier.sunny.Bot;
-import com.atelier.sunny.event.BetterTimerTask;
+import com.atelier.sunny.manager.event.BetterTimerTask;
 import com.atelier.sunny.models.DefaultEmbed;
 import com.atelier.sunny.models.GuildDocument;
 import com.atelier.sunny.models.LocalTimeConvertion;

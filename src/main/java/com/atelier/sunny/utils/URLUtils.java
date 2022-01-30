@@ -7,7 +7,7 @@ public class URLUtils {
     {
         /* Try creating a valid URL */
         try {
-            new URL(url).toURI();
+            new URL(url);
             return true;
         }
 

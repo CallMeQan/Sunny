@@ -1,4 +1,4 @@
-package com.atelier.sunny.event;
+package com.atelier.sunny.manager.event;
 
 import java.util.TimerTask;
 
