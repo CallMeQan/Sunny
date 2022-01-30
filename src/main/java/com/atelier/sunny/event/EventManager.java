@@ -12,7 +12,7 @@ public class EventManager {
     private static List<BetterTimerTask> timerTaskList = new ArrayList<>();
     private static final Timer timerManager = new Timer(true);
     private static final Logger logger = LoggerFactory.getLogger(EventManager.class);
-    private static final long milliseconds = 300000;
+    private static final long milliseconds = 300000; // 5 minutes
 
     public static void addTimer(BetterTimerTask task){
         timerTaskList.add(task);

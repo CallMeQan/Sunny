@@ -24,10 +24,10 @@ public class CommandManager {
             Command cmd = parseCmd(cmdName);
 
             if(PermissionUtil.checkPermission(event.getMember(), cmd.getPermission()))
-                event.getChannel()
-                        .sendMessage("Hiện tại thg Qân chưa thích thêm command vào, đơn giản vì, muốn chỉnh config gì thì cứ ping nó, địt mẹ thuận cay")
-                        .complete();
-                //cmd.run(event, args);
+//                event.getChannel()
+//                        .sendMessage("Hiện tại thg Qân chưa thích thêm command vào, đơn giản vì, muốn chỉnh config gì thì cứ ping nó, địt mẹ thuận cay")
+//                        .complete();
+                cmd.run(event, args);
         }catch (CmdNotFoundException e){
             logger.error(e.getMessage(), e.getCause());
         }

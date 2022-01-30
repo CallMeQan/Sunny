@@ -20,6 +20,8 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
+    // Database
+    implementation 'org.mongodb:mongodb-driver-sync:4.4.1'
 
     // https://mvnrepository.com/artifact/net.dv8tion/JDA
     implementation 'net.dv8tion:JDA:5.0.0-alpha.2'

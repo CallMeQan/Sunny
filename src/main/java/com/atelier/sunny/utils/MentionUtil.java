@@ -9,6 +9,6 @@ public class MentionUtil {
     }
 
     public static String getId(String mention){
-        return mention.substring(2, mention.length()-2);
+        return mention.substring(2, mention.length()-1);
     }
 }

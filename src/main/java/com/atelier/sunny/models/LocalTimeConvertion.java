@@ -1,7 +1,9 @@
 package com.atelier.sunny.models;
 
+import com.atelier.sunny.utils.DatabaseUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.bson.Document;
 
 import javax.annotation.Nullable;
 import java.time.LocalTime;
@@ -34,13 +36,14 @@ public enum LocalTimeConvertion {
     @Nullable
     public static MessageEmbed getEmbed(Guild guild){
         LocalTimeConvertion localTimeConvertion = checkTime(LocalTime.now(timeZone));
+        Document document = DatabaseUtils.getDocument("guildID", guild.getId());
         switch (localTimeConvertion){
             case ENIGHT:
-                return DefaultEmbed.NIGHT(guild);
+                return DefaultEmbed.NIGHT(document);
             case EMORNING:
-                return DefaultEmbed.MORNING(guild);
+                return DefaultEmbed.MORNING(document);
             case EAFTERNOON:
-                return DefaultEmbed.AFTERNOON(guild);
+                return DefaultEmbed.AFTERNOON(document);
         }
         return null;
     }
