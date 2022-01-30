@@ -5,6 +5,7 @@ import com.atelier.sunny.manager.event.EventManager;
 import com.atelier.sunny.models.GuildDocument;
 import com.atelier.sunny.models.MongoDBHandler;
 import com.atelier.sunny.utils.DatabaseUtils;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -25,10 +26,12 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         super.onGuildJoin(event);
-        DatabaseUtils.createDocument(new Document()
-                .append("guildID", event.getGuild().getId())
-                .append("guildName", event.getGuild().getName())
-        );
+        Guild guild = event.getGuild();
+        GuildDocument guildDocument = new GuildDocument()
+                .setGuildId(guild.getId())
+                .setGuildName(guild.getName())
+                .setChannelID(guild.getSystemChannel().getId());
+        DatabaseUtils.createDocument(guildDocument.toDoc());
         logger.info("Bot join " + event.getGuild().getName());
     }
 
@@ -41,10 +44,7 @@ public class Listener extends ListenerAdapter {
 
     private void setupTimer() {
         DatabaseUtils.getDocuments().forEach(document -> {
-            GuildDocument guildDocument = new GuildDocument()
-                    .setGuildId((String) Objects.requireNonNull(document.get("guildID")))
-                    .setGuildName((String) document.get("guildName"))
-                    .setChannelID((String) document.get("channelID"));
+            GuildDocument guildDocument = GuildDocument.convertDocument(document);
             EventManager.addTimer(new ServerSchedule(guildDocument));
             logger.info("Timer added "+guildDocument.getGuildName());
         });
@@ -57,11 +57,18 @@ public class Listener extends ListenerAdapter {
         // If not exist in db, then insert one
         event.getJDA().getGuilds().forEach(guild -> {
             Document doc = DatabaseUtils.getDocument("guildID", guild.getId());
-            if(doc == null) DatabaseUtils.createDocument(new Document()
-                    .append("guildID", guild.getId())
-                    .append("guildName", guild.getName())
-            );
+            if(doc == null) {
+                GuildDocument guildDocument = new GuildDocument()
+                        .setGuildId(guild.getId())
+                        .setGuildName(guild.getName())
+                        .setChannelID(guild.getSystemChannel().getId());
+                DatabaseUtils.createDocument(guildDocument.toDoc());
+            }
         });
+
+        for (Guild guild : event.getJDA().getGuilds())
+            guild.updateCommands().addCommands(CommandManager.COMMAND_DATA_LIST).queue();
+        logger.info(event.getJDA().getSelfUser().getAsTag() + " is ready");
 
         setupTimer();
         EventManager.startAllTimer();

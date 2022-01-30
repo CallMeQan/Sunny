@@ -1,5 +1,5 @@
 # Sunny
-Sunny bot for AtelierSMP
+Sunny bot for AtelierSMP, but with my database, it can be used in almost any server you want :D
 
 ### Feature
 

@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 import java.util.List;
@@ -19,9 +20,13 @@ public class SetCommand extends Command {
                         new SubcommandData("channel", "Set the channel")
                                 .addOption(OptionType.CHANNEL, "channel", "Channel to send msg", true),
                         new SubcommandData("image", "Set the Image")
-                                .addOption(OptionType.STRING, "img", "Image Url", true)
+                                .addOptions(
+                                        new OptionData(OptionType.STRING, "morning", "Customize your own morning image"),
+                                        new OptionData(OptionType.STRING, "afternoon", "Customize your own evening image"),
+                                        new OptionData(OptionType.STRING, "night", "Customize your own night image")
+                                )
                 );
-        this.perms = List.of(Permission.ADMINISTRATOR);
+        this.perms = List.of(Permission.MANAGE_SERVER);
     }
 
     @Override

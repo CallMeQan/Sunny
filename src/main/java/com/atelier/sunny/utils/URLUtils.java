@@ -10,7 +10,6 @@ public class URLUtils {
             new URL(url);
             return true;
         }
-
         // If there was an Exception
         // while creating URL object
         catch (Exception e) {

@@ -55,13 +55,15 @@ public final class GuildDocument {
     }
 
     public void update() {
-        Document document = new Document()
+        DatabaseUtils.updateDocument("guildID", this.guildID, toDoc());
+    }
+
+    public Document toDoc(){
+        return new Document()
                 .append("guildID", this.guildID)
                 .append("guildName", this.guildName)
                 .append("channelID", this.channelID)
                 .append("imageUrl", this.imageUrl);
-
-        DatabaseUtils.updateDocument("guildID", this.guildID, document);
     }
 
     public static GuildDocument convertDocument(Document doc){

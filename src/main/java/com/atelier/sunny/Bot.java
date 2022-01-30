@@ -18,15 +18,13 @@ public enum Bot {
     public void init() {
         try {
 
-            JDABuilder.createDefault(
+            jda = JDABuilder.createDefault(
                     // As Intellij IDEA has option to run gradle with custom env key, so we don't have to do this manually
                     System.getenv("DISCORD_TOKEN"),
                     GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS
-            )
-                    .addEventListeners(new Listener())
-                    .setActivity(Activity.playing("AtelierSMP: https://discord.gg/ateliermc"))
-                    .setIdle(true)
-                    .build();
+            ).addEventListeners(new Listener())
+             .setActivity(Activity.playing("AtelierSMP: https://discord.gg/ateliermc"))
+             .setIdle(true).build();
         } catch (LoginException e) {
             logger.error(e.getMessage(), e.getCause());
             System.exit(1);
