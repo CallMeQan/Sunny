@@ -11,13 +11,12 @@ import javax.security.auth.login.LoginException;
 
 public enum Bot {
     INSTANCE;
-    public static final String PREFIX = System.getenv("DISCORD_PREFIX");
     public static JDA jda;
+
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
     public void init() {
         try {
-
             jda = JDABuilder.createDefault(
                     // As Intellij IDEA has option to run gradle with custom env key, so we don't have to do this manually
                     System.getenv("DISCORD_TOKEN"),

@@ -2,6 +2,7 @@ package com.atelier.sunny.manager.command;
 
 import com.atelier.sunny.Bot;
 import com.atelier.sunny.commands.SetCommand;
+import com.atelier.sunny.commands.SlapCommand;
 import com.atelier.sunny.commands.TestCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -14,11 +15,10 @@ public class CommandManager {
     private static final ArrayList<Command> COMMAND_LIST = new ArrayList<>();
     public static final ArrayList<CommandData> COMMAND_DATA_LIST = new ArrayList<>();
 
-    private static final String PREFIX = Bot.PREFIX;
-
     public CommandManager() {
         addCommand(new SetCommand());
         addCommand(new TestCommand());
+        // addCommand(new SlapCommand());
     }
 
     private void addCommand(Command cmd) {
