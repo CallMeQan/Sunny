@@ -33,6 +33,9 @@ public class Listener extends ListenerAdapter {
                 .setChannelID(guild.getSystemChannel().getId());
         DatabaseUtils.createDocument(guildDocument.toDoc());
         logger.info("Bot join " + event.getGuild().getName());
+
+        EventManager.addTimer(new ServerSchedule(guildDocument));
+        logger.info("Timer added "+guildDocument.getGuildName());
     }
 
     @Override

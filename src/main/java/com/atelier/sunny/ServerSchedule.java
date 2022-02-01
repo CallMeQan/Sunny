@@ -26,14 +26,19 @@ public class ServerSchedule extends BetterTimerTask {
         if (guild != null) {
             TextChannel channel = guild.getTextChannelById(information.getChannelID());
             logger.info("Task checked on \"" + guild.getName() + "\"");
+            MessageEmbed embed = LocalTimeConvertion.getEmbed(guild);
 
-            if (channel != null) {
-                MessageEmbed embed = LocalTimeConvertion.getEmbed(guild);
-                if (embed != null) {
+            if (channel != null && embed != null) {
+                if (information.isRun() == false) {
                     channel.sendMessageEmbeds(embed).complete();
                     logger.info("Sent message to \"" + guild.getName() + "\"");
+                    information.setRun(true).update();
                     return;
                 }
+                logger.info("Task already ran on \""+guild.getName()+"\"");
+                return;
+            }else if (channel != null && embed == null){
+                information.setRun(false).update();
                 logger.info("Unknown time: " + LocalTime.now(LocalTimeConvertion.timeZone));
                 return;
             }
