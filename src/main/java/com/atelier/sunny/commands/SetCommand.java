@@ -2,6 +2,7 @@ package com.atelier.sunny.commands;
 
 import com.atelier.sunny.commands.sub.ChannelSetCommand;
 import com.atelier.sunny.commands.sub.ImageSetCommand;
+import com.atelier.sunny.commands.sub.TextSetCommand;
 import com.atelier.sunny.manager.command.Command;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -25,8 +26,12 @@ public class SetCommand extends Command {
                                         new OptionData(OptionType.STRING, "afternoon", "Customize your own evening image"),
                                         new OptionData(OptionType.STRING, "night", "Customize your own night image")
                                 ),
-                        new SubcommandData("event", "Set something....")
-
+                        new SubcommandData("text", "Customize your own texts or quotes")
+                                .addOptions(
+                                        new OptionData(OptionType.STRING, "morning", "Customize your own morning quote"),
+                                        new OptionData(OptionType.STRING, "afternoon", "Customize your own evening quote"),
+                                        new OptionData(OptionType.STRING, "night", "Customize your own night quote")
+                                )
                 );
         this.perms = List.of(Permission.MANAGE_SERVER);
     }
@@ -37,6 +42,8 @@ public class SetCommand extends Command {
             new ChannelSetCommand().run(event);
         } else if (event.getSubcommandName().equals("image")) {
             new ImageSetCommand().run(event);
+        } else if (event.getSubcommandName().equals("text")) {
+            new TextSetCommand().run(event);
         }
     }
 }

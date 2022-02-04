@@ -16,14 +16,18 @@ import java.util.List;
 public final class DefaultEmbed {
     public static MessageEmbed MORNING(Document document){
         String IMAGE = "https://cdn.discordapp.com/attachments/923148607157329961/935933903577960509/Atri-Genesus.png";
+        String TITLE = "Rise and shine!";
 
         Guild guild = Bot.jda.getGuildById(document.get("guildID", String.class));
         if (guild == null) throw new NullPointerException("Unknown guild id "+document.get("guildID", String.class));
 
-        List<String> imageUrl = document.getList("imageUrl", String.class);
-        if (URLUtils.isValid(imageUrl.get(0))) IMAGE = imageUrl.get(0);
+        String imageUrl = document.getList("imageUrl", String.class).get(1);
+        String texts = document.getList("texts", String.class).get(1);
+
+        if (URLUtils.isValid(imageUrl)) IMAGE = imageUrl;
+        if (!texts.trim().isEmpty()) TITLE = texts;
         return new EmbedBuilder()
-                .setTitle("Rise and shine! :atri:")
+                .setTitle(TITLE)
                 .setColor(new Color(4321431))
                 .setImage(IMAGE)
                 .setAuthor(guild.getName(), "https://discord.gg/", guild.getIconUrl())
@@ -32,14 +36,18 @@ public final class DefaultEmbed {
 
     public static MessageEmbed AFTERNOON(Document document){
         String IMAGE = "https://cdn.discordapp.com/attachments/923148607157329961/935931768832397392/unknown.png";
+        String TITLE = "You are as bright as the afternoon sun.";
 
         Guild guild = Bot.jda.getGuildById(document.get("guildID", String.class));
         if (guild == null) throw new NullPointerException("Unknown guild id "+document.get("guildID", String.class));
 
-        List<String> imageUrl = document.getList("imageUrl", String.class);
-        if (URLUtils.isValid(imageUrl.get(1))) IMAGE = imageUrl.get(1);
+        String imageUrl = document.getList("imageUrl", String.class).get(1);
+        String texts = document.getList("texts", String.class).get(1);
+
+        if (URLUtils.isValid(imageUrl)) IMAGE = imageUrl;
+        if (!texts.trim().isEmpty()) TITLE = texts;
         return new EmbedBuilder()
-                .setTitle("You are as bright as the afternoon sun ")
+                .setTitle(TITLE)
                 .setColor(new Color(15442529))
                 .setImage(IMAGE)
                 .setAuthor(guild.getName(), "https://discord.gg/", guild.getIconUrl())
@@ -47,14 +55,18 @@ public final class DefaultEmbed {
     }
     public static MessageEmbed NIGHT(Document document){
         String IMAGE = "https://cdn.discordapp.com/attachments/923148607157329961/923148735465259008/1592906132.png";
+        String TITLE = "This could be the end of the day, but soon there will be a new day.";
 
         Guild guild = Bot.jda.getGuildById(document.get("guildID", String.class));
         if (guild == null) throw new NullPointerException("Unknown guild id "+document.get("guildID", String.class));
 
-        List<String> imageUrl = document.getList("imageUrl", String.class);
-        if (URLUtils.isValid(imageUrl.get(2))) IMAGE = imageUrl.get(2);
+        String imageUrl = document.getList("imageUrl", String.class).get(2);
+        String texts = document.getList("texts", String.class).get(2);
+
+        if (URLUtils.isValid(imageUrl)) IMAGE = imageUrl;
+        if (!texts.trim().isEmpty()) TITLE = texts;
         return new EmbedBuilder()
-                .setTitle("This could be the end of the day, but soon there will be a new day.")
+                .setTitle(TITLE)
                 .setColor(new Color(5460819))
                 .setImage(IMAGE)
                 .setAuthor(guild.getName(), "https://discord.gg/", guild.getIconUrl())

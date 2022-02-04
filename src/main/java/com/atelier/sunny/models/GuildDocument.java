@@ -17,21 +17,27 @@ public final class GuildDocument {
             "https://cdn.discordapp.com/attachments/923148607157329961/923148735465259008/1592906132.png"
     );
 
+    private List<String> texts = List.of(
+            "Rise and shine!",
+            "You are as bright as the afternoon sun.",
+            "This could be the end of the day, but soon there will be a new day."
+    );
 
-    public List<String> getImageUrl() {
-        return imageUrl;
+    public List<String> getTexts() { return texts;}
+    public List<String> getImageUrl() { return imageUrl; }
+    public String getChannelID() { return channelID; }
+    public String getGuildID() { return guildID; }
+    public String getGuildName() { return guildName; }
+    public boolean isRun() { return run; }
+
+    public GuildDocument setText(int index, String value) {
+        this.texts.set(index, value);
+        return this;
     }
-    public String getChannelID() {
-        return channelID;
-    }
-    public String getGuildID() {
-        return guildID;
-    }
-    public String getGuildName() {
-        return guildName;
-    }
-    public boolean isRun() {
-        return run;
+
+    public GuildDocument setTexts(List<String> texts) {
+        this.texts = texts;
+        return this;
     }
 
     public GuildDocument setImageUrl(int index, String value) {
@@ -74,7 +80,8 @@ public final class GuildDocument {
                 .append("guildName", this.guildName)
                 .append("channelID", this.channelID)
                 .append("isRun", this.run)
-                .append("imageUrl", this.imageUrl);
+                .append("imageUrl", this.imageUrl)
+                .append("texts", this.texts);
     }
 
     public static GuildDocument convertDocument(Document doc){
@@ -84,7 +91,8 @@ public final class GuildDocument {
                 .setGuildId(doc.getString("guildID"))
                 .setGuildName(doc.getString("guildName"))
                 .setRun(doc.getBoolean("isRun"))
-                .setChannelID(doc.getString("channelID"));
+                .setChannelID(doc.getString("channelID"))
+                .setTexts(doc.getList("texts", String.class));
     }
 
 }

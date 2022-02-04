@@ -14,33 +14,28 @@ public class ImageSetCommand {
     private final Logger logger = LoggerFactory.getLogger(ImageSetCommand.class);
 
     public void run(SlashCommandEvent event) {
-        MessageFormat response = new MessageFormat("Succeed changed image {0} to {1}");
+        MessageFormat response = new MessageFormat("Succeed changed image for {0} to {1}");
 
         for (OptionMapping optionMapping: event.getOptions()) {
             String name = optionMapping.getName();
             String value = optionMapping.getAsString();
             if (URLUtils.isValid(value)){
 
-                switch (name){
-                    case "morning":
-                        GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
-                                .setImageUrl(0, value)
-                                .update();
-                        break;
-                    case "afternoon":
-                        GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
-                                .setImageUrl(1, value)
-                                .update();
-                        break;
-                    case "night":
-                        GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
-                                .setImageUrl(2, value)
-                                .update();
-                        break;
-                    default:
-                        logger.info("\""+event.getGuild().getName()+"\" had ran an unknown option");
-                        event.reply("Unknown "+name).queue();
+                switch (name) {
+                    case "morning" -> GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
+                            .setImageUrl(0, value)
+                            .update();
+                    case "afternoon" -> GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
+                            .setImageUrl(1, value)
+                            .update();
+                    case "night" -> GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
+                            .setImageUrl(2, value)
+                            .update();
+                    default -> {
+                        logger.info("\"" + event.getGuild().getName() + "\" had ran an unknown option");
+                        event.reply("Unknown " + name).queue();
                         return;
+                    }
                 }
                 logger.info("\""+event.getGuild().getName()+"\" had changed "+name+" image to "+value);
                 event.reply(response.format(new String[]{name, value})).queue();

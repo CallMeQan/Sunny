@@ -5,6 +5,7 @@ import com.atelier.sunny.manager.event.EventManager;
 import com.atelier.sunny.models.GuildDocument;
 import com.atelier.sunny.models.MongoDBHandler;
 import com.atelier.sunny.utils.DatabaseUtils;
+import com.atelier.sunny.utils.GuildUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
@@ -30,7 +31,7 @@ public class Listener extends ListenerAdapter {
         GuildDocument guildDocument = new GuildDocument()
                 .setGuildId(guild.getId())
                 .setGuildName(guild.getName())
-                .setChannelID(guild.getSystemChannel().getId());
+                .setChannelID(GuildUtils.getFirstTextChannel(guild).getId());
         DatabaseUtils.createDocument(guildDocument.toDoc());
         logger.info("Bot join " + event.getGuild().getName());
 
@@ -64,7 +65,7 @@ public class Listener extends ListenerAdapter {
                 GuildDocument guildDocument = new GuildDocument()
                         .setGuildId(guild.getId())
                         .setGuildName(guild.getName())
-                        .setChannelID(guild.getSystemChannel().getId());
+                        .setChannelID(GuildUtils.getFirstTextChannel(guild).getId());
                 DatabaseUtils.createDocument(guildDocument.toDoc());
             }
         });
@@ -85,7 +86,7 @@ public class Listener extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public void onSlashCommand(@NotNull SlashCommandEvent event) {
         super.onSlashCommand(event);
         manager.process(event);
     }
