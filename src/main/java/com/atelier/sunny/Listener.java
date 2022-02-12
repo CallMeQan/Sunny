@@ -1,5 +1,6 @@
 package com.atelier.sunny;
 
+import com.atelier.sunny.manager.CustomMessage;
 import com.atelier.sunny.manager.command.CommandManager;
 import com.atelier.sunny.manager.event.EventManager;
 import com.atelier.sunny.models.GuildDocument;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
@@ -33,10 +35,12 @@ public class Listener extends ListenerAdapter {
                 .setGuildName(guild.getName())
                 .setChannelID(GuildUtils.getFirstTextChannel(guild).getId());
         DatabaseUtils.createDocument(guildDocument.toDoc());
+        guild.updateCommands().addCommands(CommandManager.COMMAND_DATA_LIST).queue();
         logger.info("Bot join " + event.getGuild().getName());
 
         EventManager.addTimer(new ServerSchedule(guildDocument));
         logger.info("Timer added "+guildDocument.getGuildName());
+        EventManager.startTimer(guildDocument.getGuildID());
     }
 
     @Override
@@ -89,5 +93,11 @@ public class Listener extends ListenerAdapter {
     public void onSlashCommand(@NotNull SlashCommandEvent event) {
         super.onSlashCommand(event);
         manager.process(event);
+    }
+
+    @Override
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        super.onMessageReceived(event);
+        CustomMessage.process(event); // Atelier Only
     }
 }

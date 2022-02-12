@@ -1,9 +1,7 @@
 package com.atelier.sunny.manager.command;
 
 import com.atelier.sunny.Bot;
-import com.atelier.sunny.commands.SetCommand;
-import com.atelier.sunny.commands.SlapCommand;
-import com.atelier.sunny.commands.TestCommand;
+import com.atelier.sunny.commands.*;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -18,7 +16,9 @@ public class CommandManager {
     public CommandManager() {
         addCommand(new SetCommand());
         addCommand(new TestCommand());
-        // addCommand(new SlapCommand());
+        addCommand(new SlapCommand());
+        addCommand(new StartTimerCommand());
+        addCommand(new StopTimerCommand());
     }
 
     private void addCommand(Command cmd) {

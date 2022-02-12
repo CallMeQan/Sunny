@@ -9,7 +9,7 @@ import java.util.Timer;
 
 public class EventManager {
 
-    private static List<BetterTimerTask> timerTaskList = new ArrayList<>();
+    private static final List<BetterTimerTask> timerTaskList = new ArrayList<>();
     private static final Timer timerManager = new Timer(true);
     private static final Logger logger = LoggerFactory.getLogger(EventManager.class);
     private static final long milliseconds = 300000; // 5 minutes
@@ -20,14 +20,14 @@ public class EventManager {
 
     public static boolean isTimerInList(String id){
         for (BetterTimerTask task: timerTaskList) {
-            if (id == task.getId()) return true;
+            if (id.equals(task.getId())) return true;
         }
         return false;
     }
 
-    public static boolean shutdownTask(String id){
+    public static boolean stopTimer(String id){
         for (BetterTimerTask task: timerTaskList) {
-            if (id == task.getId()){
+            if (id.equals(task.getId())){
                 logger.info("Shutting down task with id " + task.getId());
                 return task.cancel();
             }
@@ -35,11 +35,11 @@ public class EventManager {
         return false;
     }
 
-    public static void shutdownTimer(){timerManager.cancel();}
+    public static void shutdown(){timerManager.cancel();}
 
     public static void startTimer(String id){
         for (BetterTimerTask task: timerTaskList) {
-            if (id == task.getId()){
+            if (id.equals(task.getId())){
                 timerManager.scheduleAtFixedRate(task, 0, milliseconds);
                 logger.info("Task " + task.getId() + " had scheduled");
                 return;

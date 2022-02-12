@@ -29,7 +29,7 @@ public class ServerSchedule extends BetterTimerTask {
             MessageEmbed embed = LocalTimeConvertion.getEmbed(guild);
 
             if (channel != null && embed != null) {
-                if (information.isRun() == false) {
+                if (!information.isRun()) {
                     channel.sendMessageEmbeds(embed).complete();
                     logger.info("Sent message to \"" + guild.getName() + "\"");
                     information.setRun(true).update();
@@ -39,7 +39,7 @@ public class ServerSchedule extends BetterTimerTask {
                 return;
             }else if (channel != null && embed == null){
                 information.setRun(false).update();
-                logger.info("Unknown time: " + LocalTime.now(LocalTimeConvertion.timeZone));
+                logger.info("Unknown time: " + LocalTime.now(LocalTimeConvertion.TIMEZONE.timeZone));
                 return;
             }
             logger.info("Channel or guild not found: "+ guild.getId() + " with channelId is "+information.getGuildID());

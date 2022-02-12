@@ -10,41 +10,46 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 
 public enum LocalTimeConvertion {
-    EMORNING,
-    EAFTERNOON,
-    ENIGHT,
-    EUNKNOWN;
-    public static final ZoneId timeZone = ZoneId.of("Asia/Ho_Chi_Minh");
-    public static final LocalTime MORNING = LocalTime.of(6, 0, 0); // 6:00
-    public static final LocalTime MORNING_LATE = MORNING.plusMinutes(30); // 6:30
-    public static final LocalTime AFTERNOON = LocalTime.of(12, 0, 0); // 12:00 PM
-    public static final LocalTime AFTERNOON_LATE = AFTERNOON.plusMinutes(30); // 12:30 PM
-    public static final LocalTime NIGHT = LocalTime.of(20, 0,0); // 18:00 -> 6:00 PM
-    public static final LocalTime NIGHT_LATE = NIGHT.plusMinutes(30); // 18:30 -> 6:30 PM
+    MORNING(LocalTime.of(6, 0, 0)),
+    MORNING_LATE(MORNING.time.plusMinutes(30)),
+    AFTERNOON(LocalTime.of(12, 0, 0)),
+    AFTERNOON_LATE(AFTERNOON.time.plusMinutes(30)),
+    NIGHT(LocalTime.of(20, 0,0)),
+    NIGHT_LATE(NIGHT.time.plusMinutes(30)),
+    UNKNOWN(LocalTime.MAX),
+    TIMEZONE(ZoneId.of("Asia/Ho_Chi_Minh"));
+
+    public LocalTime time;
+    public ZoneId timeZone;
+
+    LocalTimeConvertion(LocalTime time){
+        this.time = time;
+    }
+
+    LocalTimeConvertion(ZoneId timeZone){
+        this.timeZone = timeZone;
+    }
 
     public static LocalTimeConvertion checkTime(LocalTime time) {
-        if (time.isAfter(NIGHT) && time.isBefore(NIGHT_LATE)){
-            return LocalTimeConvertion.ENIGHT;
-        }else if (time.isAfter(AFTERNOON) && time.isBefore(AFTERNOON_LATE)){
-            return LocalTimeConvertion.EAFTERNOON;
-        }else if (time.isAfter(MORNING) && time.isBefore(MORNING_LATE)){
-            return LocalTimeConvertion.EMORNING;
+        if (time.isAfter(LocalTimeConvertion.NIGHT.time) && time.isBefore(LocalTimeConvertion.NIGHT_LATE.time)){
+            return LocalTimeConvertion.NIGHT;
+        }else if (time.isAfter(LocalTimeConvertion.AFTERNOON.time) && time.isBefore(LocalTimeConvertion.AFTERNOON_LATE.time)){
+            return LocalTimeConvertion.AFTERNOON;
+        }else if (time.isAfter(LocalTimeConvertion.MORNING.time) && time.isBefore(LocalTimeConvertion.MORNING_LATE.time)){
+            return LocalTimeConvertion.MORNING;
         }else
-            return LocalTimeConvertion.EUNKNOWN;
+            return LocalTimeConvertion.UNKNOWN;
     }
 
     @Nullable
     public static MessageEmbed getEmbed(Guild guild){
-        LocalTimeConvertion localTimeConvertion = checkTime(LocalTime.now(timeZone));
+        LocalTimeConvertion localTimeConvertion = checkTime(LocalTime.now(LocalTimeConvertion.TIMEZONE.timeZone));
         Document document = DatabaseUtils.getDocument("guildID", guild.getId());
-        switch (localTimeConvertion){
-            case ENIGHT:
-                return DefaultEmbed.NIGHT(document);
-            case EMORNING:
-                return DefaultEmbed.MORNING(document);
-            case EAFTERNOON:
-                return DefaultEmbed.AFTERNOON(document);
-        }
-        return null;
+        return switch (localTimeConvertion) {
+            case NIGHT -> DefaultEmbed.NIGHT(document);
+            case MORNING -> DefaultEmbed.MORNING(document);
+            case AFTERNOON -> DefaultEmbed.AFTERNOON(document);
+            default -> null;
+        };
     }
 }
