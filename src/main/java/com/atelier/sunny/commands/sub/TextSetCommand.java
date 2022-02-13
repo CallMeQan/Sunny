@@ -15,7 +15,7 @@ public class TextSetCommand {
     private final Logger logger = LoggerFactory.getLogger(ChannelSetCommand.class);
 
     public void run(SlashCommandEvent event) {
-        MessageFormat response = new MessageFormat("Succeed changed {0} text to {1}");
+        MessageFormat response = new MessageFormat("Succeed changed {0} text to `{1}`");
 
         for (OptionMapping optionMapping: event.getOptions()) {
             String name = optionMapping.getName();
