@@ -36,7 +36,8 @@ public class CommandManager {
     public void process(SlashCommandEvent event) {
         Command cmd = this.getCommand(event.getName());
         if (cmd != null) {
-            if (!PermissionUtil.checkPermission(event.getMember(), cmd.perms.toArray(Permission[]::new))) return;
+            if (cmd.perms == null) return;
+            else if (!PermissionUtil.checkPermission(event.getMember(), cmd.perms.toArray(Permission[]::new))) return;
             cmd.run(event);
         }
     }

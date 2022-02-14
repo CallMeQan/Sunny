@@ -42,7 +42,6 @@ public class EventManager {
             if (id.equals(task.getId())){
                 timerManager.scheduleAtFixedRate(task, 0, milliseconds);
                 logger.info("Task " + task.getId() + " had scheduled");
-                return;
             }
         }
     }

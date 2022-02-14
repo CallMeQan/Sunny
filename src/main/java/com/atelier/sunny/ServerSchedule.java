@@ -6,6 +6,7 @@ import com.atelier.sunny.models.LocalTimeConvertion;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +31,16 @@ public class ServerSchedule extends BetterTimerTask {
 
             if (channel != null && embed != null) {
                 if (!information.isRun()) {
-                    channel.sendMessageEmbeds(embed).complete();
-                    logger.info("Sent message to \"" + guild.getName() + "\"");
-                    information.setRun(true).update();
-                    return;
+                    try {
+                        channel.sendMessageEmbeds(embed).complete();
+                        logger.info("Sent message to \"" + guild.getName() + "\"");
+                        information.setRun(true).update();
+                        return;
+                    }catch (InsufficientPermissionException perms){
+                        logger.error("\""+guild.getName()+"\" cause error. ", perms.getCause());
+                        information.setRun(false).update();
+                    }
+
                 }
                 logger.info("Task already ran on \""+guild.getName()+"\"");
                 return;
