@@ -8,14 +8,11 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.bson.Document;
 
 import java.awt.Color;
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
 
 
 public final class DefaultEmbed {
     public static MessageEmbed MORNING(Document document){
-        String IMAGE = "https://cdn.discordapp.com/attachments/923148607157329961/935933903577960509/Atri-Genesus.png";
+        String IMAGE = "https://cdn.discordapp.com/attachments/814127567699181610/943094281403531264/Atri-SummerGrass.png";
         String TITLE = "Rise and shine!";
 
         Guild guild = Bot.jda.getGuildById(document.get("guildID", String.class));
