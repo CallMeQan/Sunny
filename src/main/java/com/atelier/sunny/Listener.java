@@ -33,7 +33,7 @@ public class Listener extends ListenerAdapter {
         GuildDocument guildDocument = new GuildDocument()
                 .setGuildId(guild.getId())
                 .setGuildName(guild.getName())
-                .setChannelID(GuildUtils.getFirstTextChannel(guild).getId());
+                .setChannelID("0");
         DatabaseUtils.createDocument(guildDocument.toDoc());
         guild.updateCommands().addCommands(CommandManager.COMMAND_DATA_LIST).queue();
         logger.info("Bot join " + event.getGuild().getName());
@@ -69,7 +69,7 @@ public class Listener extends ListenerAdapter {
                 GuildDocument guildDocument = new GuildDocument()
                         .setGuildId(guild.getId())
                         .setGuildName(guild.getName())
-                        .setChannelID(GuildUtils.getFirstTextChannel(guild).getId());
+                        .setChannelID("0");
                 DatabaseUtils.createDocument(guildDocument.toDoc());
             }
         });

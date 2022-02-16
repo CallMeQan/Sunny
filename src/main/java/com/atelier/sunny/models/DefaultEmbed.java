@@ -18,8 +18,8 @@ public final class DefaultEmbed {
         Guild guild = Bot.jda.getGuildById(document.get("guildID", String.class));
         if (guild == null) throw new NullPointerException("Unknown guild id "+document.get("guildID", String.class));
 
-        String imageUrl = document.getList("imageUrl", String.class).get(1);
-        String texts = document.getList("texts", String.class).get(1);
+        String imageUrl = document.getList("imageUrl", String.class).get(0);
+        String texts = document.getList("texts", String.class).get(0);
 
         if (URLUtils.isValid(imageUrl)) IMAGE = imageUrl;
         if (!texts.trim().isEmpty()) TITLE = texts;

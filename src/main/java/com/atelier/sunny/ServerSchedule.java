@@ -37,10 +37,9 @@ public class ServerSchedule extends BetterTimerTask {
                         information.setRun(true).update();
                         return;
                     }catch (InsufficientPermissionException perms){
-                        logger.error("\""+guild.getName()+"\" cause error. ", perms.getCause());
+                        logger.error("\""+guild.getName()+"\" is missing permission: "+perms.getPermission().getName(), perms.getCause());
                         information.setRun(false).update();
                     }
-
                 }
                 logger.info("Task already ran on \""+guild.getName()+"\"");
                 return;
