@@ -13,7 +13,7 @@ import javax.security.auth.login.LoginException;
 public enum Bot {
     INSTANCE;
     public static JDA jda;
-    public static final OsuClient osuClient = new OsuClient(System.getenv("OSU_CLIENT_ID"), System.getenv("OSU_CLIENT_SECRET"));
+    // public static final OsuClient osuClient = new OsuClient(System.getenv("OSU_CLIENT_ID"), System.getenv("OSU_CLIENT_SECRET"));
 
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
