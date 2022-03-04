@@ -1,4 +1,4 @@
-package com.atelier.sunny.commands.sub;
+package com.atelier.sunny.slashCommands.sub;
 
 import com.atelier.sunny.models.GuildDocument;
 import com.atelier.sunny.utils.DatabaseUtils;
@@ -12,7 +12,7 @@ public class ChannelSetCommand {
 
     public void run(SlashCommandEvent event) {
         GuildChannel channel = event.getOption("channel").getAsGuildChannel();
-        GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
+        GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId(), DatabaseUtils.CollName.GUILD))
                 .setChannelID(channel.getId())
                 .update();
         event.reply("Succeed changed channel to " + channel.getAsMention()).queue();

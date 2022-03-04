@@ -6,41 +6,49 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import net.dv8tion.jda.api.entities.Guild;
 import org.bson.Document;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 
-public class DatabaseUtils {
+public abstract class DatabaseUtils {
     private static final MongoClient CLIENT = MongoDBHandler.getClient();
     private static final MongoDatabase DATABASE = CLIENT.getDatabase("Sunny");
-    private static final String collName = "SunnyGuilds";
 
-    @Nullable
-    public static Document getDocument(String key, Object val) {
-        MongoCollection<Document> collection = DATABASE.getCollection(collName);
+    public static Document getDocument(String key, Object val, @NotNull CollName collName) {
+        MongoCollection<Document> collection = DATABASE.getCollection(collName.getName());
         return collection.find(Filters.eq(key, val)).first();
     }
 
-    public static void updateDocument(String key, Object val, Document setting) {
-        MongoCollection<Document> collection = DATABASE.getCollection(collName);
-        deleteDocument(key, val);
+    public static void updateDocument(String key, Object val, Document setting, @NotNull CollName collName) {
+        MongoCollection<Document> collection = DATABASE.getCollection(collName.getName());
+        deleteDocument(key, val, collName);
         collection.insertOne(setting);
     }
 
-    public static void createDocument(Document... doc) {
-        MongoCollection<Document> collection = DATABASE.getCollection(collName);
+    public static void createDocument(@NotNull CollName collName, Document... doc) {
+        MongoCollection<Document> collection = DATABASE.getCollection(collName.getName());
         collection.insertMany(Arrays.asList(doc));
     }
 
-    public static void deleteDocument(String key, Object val) {
-        MongoCollection<Document> collection = DATABASE.getCollection(collName);
+    public static void deleteDocument(String key, Object val, @NotNull CollName collName) {
+        MongoCollection<Document> collection = DATABASE.getCollection(collName.getName());
         collection.deleteMany(Filters.eq(key, val));
     }
 
-    public static FindIterable<Document> getDocuments(){
-        MongoCollection<Document> collection = DATABASE.getCollection(collName);
+    public static FindIterable<Document> getDocuments(@NotNull CollName collName){
+        MongoCollection<Document> collection = DATABASE.getCollection(collName.getName());
         return collection.find();
+    }
+
+    public enum CollName{
+        OSU("SunnyOsu"),
+        GUILD("SunnyGuilds");
+        private String name;
+        CollName(String name) {
+            this.name = name;
+        }
+        public String getName(){return this.name;}
     }
 }

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.text.MessageFormat;
 
 public class CustomMessage {
+
     public static MessageEmbed ipEmbed = new EmbedBuilder()
             .setTitle("AtelierMC IP")
             .setDescription("__**Địa chỉ để kết nối đến AtelierMC**__")
@@ -21,9 +22,8 @@ public class CustomMessage {
     public static void process(MessageReceivedEvent event) {
         if(!event.getGuild().getId().equals("814127567207530527")) return;
 
-        switch (event.getMessage().getContentDisplay()) {
-            case "!at online" -> event.getMessage().reply("Thg lon thuancay nó xóa cái command này rồi nên không biết đâu").queue();
-            case "!at ip" -> event.getMessage().replyEmbeds(ipEmbed).queue();
+        if ("!at ip".equals(event.getMessage().getContentDisplay())) {
+            event.getMessage().replyEmbeds(ipEmbed).queue();
         }
     }
 }

@@ -6,12 +6,14 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tw.kane.osu4j.OsuClient;
 
 import javax.security.auth.login.LoginException;
 
 public enum Bot {
     INSTANCE;
     public static JDA jda;
+    public static final OsuClient osuClient = new OsuClient(System.getenv("OSU_CLIENT_ID"), System.getenv("OSU_CLIENT_SECRET"));
 
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
@@ -28,9 +30,5 @@ public enum Bot {
             logger.error(e.getMessage(), e.getCause());
             System.exit(1);
         }
-    }
-
-    public static void shutdown(){
-        jda.shutdownNow();
     }
 }

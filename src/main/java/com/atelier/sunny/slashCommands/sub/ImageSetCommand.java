@@ -1,4 +1,4 @@
-package com.atelier.sunny.commands.sub;
+package com.atelier.sunny.slashCommands.sub;
 
 import com.atelier.sunny.models.GuildDocument;
 import com.atelier.sunny.utils.DatabaseUtils;
@@ -15,6 +15,7 @@ public class ImageSetCommand {
 
     public void run(SlashCommandEvent event) {
         MessageFormat response = new MessageFormat("Succeed changed image for {0} to {1}");
+        GuildDocument document = GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId(), DatabaseUtils.CollName.GUILD));
 
         for (OptionMapping optionMapping: event.getOptions()) {
             String name = optionMapping.getName();
@@ -22,17 +23,11 @@ public class ImageSetCommand {
             if (URLUtils.isValid(value)){
 
                 switch (name) {
-                    case "morning" -> GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
-                            .setImageUrl(0, value)
-                            .update();
-                    case "afternoon" -> GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
-                            .setImageUrl(1, value)
-                            .update();
-                    case "night" -> GuildDocument.convertDocument(DatabaseUtils.getDocument("guildID", event.getGuild().getId()))
-                            .setImageUrl(2, value)
-                            .update();
+                    case "morning" -> document.setImageUrl(0, value).update();
+                    case "afternoon" -> document.setImageUrl(1, value).update();
+                    case "night" -> document.setImageUrl(2, value).update();
                     default -> {
-                        logger.info("\"" + event.getGuild().getName() + "\" had ran an unknown option");
+                        logger.info("\"" + event.getGuild().getName() + "\" had ran an unknown option: "+name);
                         event.reply("Unknown " + name).queue();
                         return;
                     }

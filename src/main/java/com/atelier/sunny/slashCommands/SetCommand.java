@@ -1,9 +1,9 @@
-package com.atelier.sunny.commands;
+package com.atelier.sunny.slashCommands;
 
-import com.atelier.sunny.commands.sub.ChannelSetCommand;
-import com.atelier.sunny.commands.sub.ImageSetCommand;
-import com.atelier.sunny.commands.sub.TextSetCommand;
-import com.atelier.sunny.manager.command.Command;
+import com.atelier.sunny.slashCommands.sub.ChannelSetCommand;
+import com.atelier.sunny.slashCommands.sub.ImageSetCommand;
+import com.atelier.sunny.slashCommands.sub.TextSetCommand;
+import com.atelier.sunny.manager.command.SlashCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -13,10 +13,9 @@ import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 import java.util.List;
 
-public class SetCommand extends Command {
+public class SetCommand extends SlashCommand {
     public SetCommand() {
-        super();
-        this.data = new CommandData("set", "Setting your server config")
+        super(new CommandData("set", "Setting your server config")
                 .addSubcommands(
                         new SubcommandData("channel", "Set the channel")
                                 .addOption(OptionType.CHANNEL, "channel", "Channel to send msg", true),
@@ -32,8 +31,8 @@ public class SetCommand extends Command {
                                         new OptionData(OptionType.STRING, "afternoon", "Customize your own evening quote"),
                                         new OptionData(OptionType.STRING, "night", "Customize your own night quote")
                                 )
-                );
-        this.perms = List.of(Permission.MANAGE_SERVER);
+                ),
+                List.of(Permission.MANAGE_SERVER));
     }
 
     @Override

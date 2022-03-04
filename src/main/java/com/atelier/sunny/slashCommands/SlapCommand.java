@@ -1,6 +1,6 @@
-package com.atelier.sunny.commands;
+package com.atelier.sunny.slashCommands;
 
-import com.atelier.sunny.manager.command.Command;
+import com.atelier.sunny.manager.command.SlashCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -19,13 +19,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class SlapCommand extends Command {
+public class SlapCommand extends SlashCommand {
     private final Logger logger = LoggerFactory.getLogger(SlapCommand.class);
     public SlapCommand() {
-        super();
-        this.data = new CommandData("slap", "SLAP, SLAP AND JUST SLAP YOUR FUCKING FRIEND :D")
-                .addOption(OptionType.USER, "user", "Whose you want to slap", true);
-        this.perms = List.of(Permission.MESSAGE_SEND);
+        super(new CommandData("slap", "SLAP, SLAP AND JUST SLAP YOUR FUCKING FRIEND :D")
+                .addOption(OptionType.USER, "user", "Whose you want to slap", true),
+                List.of(Permission.MESSAGE_SEND));
     }
     @Override
     public void run(SlashCommandEvent event) {

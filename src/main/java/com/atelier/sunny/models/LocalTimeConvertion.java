@@ -44,7 +44,7 @@ public enum LocalTimeConvertion {
     @Nullable
     public static MessageEmbed getEmbed(Guild guild){
         LocalTimeConvertion localTimeConvertion = checkTime(LocalTime.now(LocalTimeConvertion.TIMEZONE.timeZone));
-        Document document = DatabaseUtils.getDocument("guildID", guild.getId());
+        Document document = DatabaseUtils.getDocument("guildID", guild.getId(), DatabaseUtils.CollName.GUILD);
         return switch (localTimeConvertion) {
             case NIGHT -> DefaultEmbed.NIGHT(document);
             case MORNING -> DefaultEmbed.MORNING(document);

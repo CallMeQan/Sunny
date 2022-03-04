@@ -1,6 +1,6 @@
-package com.atelier.sunny.commands;
+package com.atelier.sunny.slashCommands;
 
-import com.atelier.sunny.manager.command.Command;
+import com.atelier.sunny.manager.command.SlashCommand;
 import com.atelier.sunny.manager.event.EventManager;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -11,14 +11,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-public class StopTimerCommand extends Command {
+public class StopTimerCommand extends SlashCommand {
     private final Logger logger = LoggerFactory.getLogger(StopTimerCommand.class);
 
     public StopTimerCommand(){
-        super();
-        this.data = new CommandData("owner_stop_timer", "BOT OWNER ONLY, Stop a specific server thread")
-                .addOption(OptionType.STRING, "id", "ID server", true);
-        this.perms = null;
+        super(new CommandData("owner_stop_timer", "BOT OWNER ONLY, Stop a specific server thread")
+                .addOption(OptionType.STRING, "id", "ID server", true),
+                null);
     }
 
     @Override

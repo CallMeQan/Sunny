@@ -2,11 +2,11 @@ package com.atelier.sunny;
 
 import com.atelier.sunny.manager.CustomMessage;
 import com.atelier.sunny.manager.command.CommandManager;
+import com.atelier.sunny.manager.command.SlashCommandManager;
 import com.atelier.sunny.manager.event.EventManager;
 import com.atelier.sunny.models.GuildDocument;
 import com.atelier.sunny.models.MongoDBHandler;
 import com.atelier.sunny.utils.DatabaseUtils;
-import com.atelier.sunny.utils.GuildUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
@@ -20,11 +20,10 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
-
 public class Listener extends ListenerAdapter {
-    private final CommandManager manager = new CommandManager();
-    private final Logger logger = LoggerFactory.getLogger(Listener.class);
+    private static final SlashCommandManager manager = new SlashCommandManager();
+    private static final CommandManager cmdManager = new CommandManager();
+    private static final Logger logger = LoggerFactory.getLogger(Listener.class);
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
@@ -34,8 +33,8 @@ public class Listener extends ListenerAdapter {
                 .setGuildId(guild.getId())
                 .setGuildName(guild.getName())
                 .setChannelID("0");
-        DatabaseUtils.createDocument(guildDocument.toDoc());
-        guild.updateCommands().addCommands(CommandManager.COMMAND_DATA_LIST).queue();
+        DatabaseUtils.createDocument(DatabaseUtils.CollName.GUILD, guildDocument.toDoc());
+        guild.updateCommands().addCommands(SlashCommandManager.COMMAND_DATA_LIST).queue();
         logger.info("Bot join " + event.getGuild().getName());
 
         EventManager.addTimer(new ServerSchedule(guildDocument));
@@ -46,12 +45,12 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         super.onGuildLeave(event);
-        DatabaseUtils.deleteDocument("guildID", event.getGuild().getId());
+        DatabaseUtils.deleteDocument("guildID", event.getGuild().getId(), DatabaseUtils.CollName.GUILD);
         logger.info("Bot leave " + event.getGuild().getName());
     }
 
     private void setupTimer() {
-        DatabaseUtils.getDocuments().forEach(document -> {
+        DatabaseUtils.getDocuments(DatabaseUtils.CollName.GUILD).forEach(document -> {
             GuildDocument guildDocument = GuildDocument.convertDocument(document);
             EventManager.addTimer(new ServerSchedule(guildDocument));
             logger.info("Timer added "+guildDocument.getGuildName());
@@ -64,18 +63,18 @@ public class Listener extends ListenerAdapter {
         // Everytime this bot started up, it will go straight around every guild that it joined
         // If not exist in db, then insert one
         event.getJDA().getGuilds().forEach(guild -> {
-            Document doc = DatabaseUtils.getDocument("guildID", guild.getId());
+            Document doc = DatabaseUtils.getDocument("guildID", guild.getId(), DatabaseUtils.CollName.GUILD);
             if(doc == null) {
                 GuildDocument guildDocument = new GuildDocument()
                         .setGuildId(guild.getId())
                         .setGuildName(guild.getName())
                         .setChannelID("0");
-                DatabaseUtils.createDocument(guildDocument.toDoc());
+                DatabaseUtils.createDocument(DatabaseUtils.CollName.GUILD, guildDocument.toDoc());
             }
         });
 
         for (Guild guild : event.getJDA().getGuilds())
-            guild.updateCommands().addCommands(CommandManager.COMMAND_DATA_LIST).queue();
+            guild.updateCommands().addCommands(SlashCommandManager.COMMAND_DATA_LIST).queue();
         logger.info(event.getJDA().getSelfUser().getAsTag() + " is ready");
 
         setupTimer();
@@ -98,6 +97,8 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
+        // if(event.getMessage().getContentDisplay().startsWith(System.getenv("DISCORD_PREFIX")))
+            //cmdManager.process(event);
         CustomMessage.process(event); // Atelier Only
     }
 }

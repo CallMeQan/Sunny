@@ -71,7 +71,7 @@ public final class GuildDocument {
     }
 
     public void update() {
-        DatabaseUtils.updateDocument("guildID", this.guildID, toDoc());
+        DatabaseUtils.updateDocument("guildID", this.guildID, toDoc(), DatabaseUtils.CollName.GUILD);
     }
 
     public Document toDoc(){
