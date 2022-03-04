@@ -29,16 +29,16 @@ public class MigrateCommand extends SlashCommand {
     @Override
     public void run(SlashCommandEvent event) {
         File file = new File(pathToFile);
-        String username = event.getOption("username").getAsString();
-        String password = event.getOption("password").getAsString();
+        String username = event.getOption("username").getAsString().replaceAll(" ", "_");
+        String password = event.getOption("password").getAsString().replaceAll(" ", "_");
 
         try {
             file.createNewFile();
             int pos = isMigrated(event.getUser().getId(), file);
             FileOutputStream outputStream;
             if(pos > -1){
-                outputStream = new FileOutputStream(file);
                 String newText = insertByIndex(pos, file, username, password);
+                outputStream = new FileOutputStream(file);
                 outputStream.write(newText.getBytes(StandardCharsets.UTF_8));
             } else{
                 outputStream = new FileOutputStream(file, true);
@@ -60,10 +60,9 @@ public class MigrateCommand extends SlashCommand {
      */
     private int isMigrated(String userId, File file){
         try {
-            String[] lines = Files.lines(file.toPath()).toArray(String[]::new);
-            for (int i = 0; i < lines.length; i++) {
-                String[] line_arr = lines[i].split(":");
-                if(line_arr[0].equals(userId)) return i;
+            List<String> lines = Files.readAllLines(file.toPath());
+            for (int i = 0; i < lines.size(); i++) {
+                if(lines.get(i).split(":")[0].equals(userId)) return i;
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
@@ -74,10 +73,10 @@ public class MigrateCommand extends SlashCommand {
     private String insertByIndex(int index, File file, String username, String password){
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            List<String> line_list = Arrays.stream(lines.get(index).split(":")).toList();
-            line_list.set(1, username);
-            line_list.set(2, password);
-            lines.set(index, String.join(":", line_list));
+            String[] line_arr = lines.get(index).split(":");
+            line_arr[1] = username;
+            line_arr[2] = password;
+            lines.set(index, String.join(":", line_arr));
             return String.join("\n", lines);
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());

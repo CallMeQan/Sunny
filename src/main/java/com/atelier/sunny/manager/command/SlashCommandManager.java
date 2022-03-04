@@ -17,6 +17,7 @@ public class SlashCommandManager {
         addCommand(new TestCommand());
         addCommand(new SlapCommand());
         addCommand(new MigrateCommand());
+        addCommand(new MigrateGetAsFileCommand());
         // addCommand(new StartTimerCommand());
         // addCommand(new StopTimerCommand());
     }
@@ -36,8 +37,14 @@ public class SlashCommandManager {
     public void process(SlashCommandEvent event) {
         SlashCommand cmd = this.getCommand(event.getName());
         if (cmd != null) {
-            if (cmd.perms == null) return;
-            else if (!PermissionUtil.checkPermission(event.getMember(), cmd.perms.toArray(Permission[]::new))) return;
+            if (cmd.perms == null) {
+                event.reply("Unknown command: "+event.getName()).setEphemeral(true).queue();
+                return;
+            }
+            else if (!PermissionUtil.checkPermission(event.getMember(), cmd.perms.toArray(Permission[]::new))) {
+                event.reply("You're missing permissions to run this command").setEphemeral(true).queue();
+                return;
+            }
             cmd.run(event);
         }
     }
