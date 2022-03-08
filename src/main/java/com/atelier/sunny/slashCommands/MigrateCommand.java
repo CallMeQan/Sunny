@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MigrateCommand extends SlashCommand {
-    private String pathToFile = "migrate.txt";
-    private Logger logger = LoggerFactory.getLogger(MigrateCommand.class);
+    private final String pathToFile = "migrate.txt";
+    private final Logger logger = LoggerFactory.getLogger(MigrateCommand.class);
 
     public MigrateCommand(){
         super(new CommandData("migrate", "Migrate, you only can set one! And only ONE!")
@@ -46,6 +46,7 @@ public class MigrateCommand extends SlashCommand {
             }
             outputStream.close();
             event.reply("Succeed migrated!").setEphemeral(true).queue();
+            logger.info(event.getUser().getName() + " has migrated!");
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
             event.reply("There's an error while migrating, please contact admin for more help!").setEphemeral(true).queue();
@@ -54,9 +55,9 @@ public class MigrateCommand extends SlashCommand {
 
     /**
      * Check is user migrated? return -1 if not
-     * @param userId
-     * @param file
-     * @return
+     * @param userId discord user id
+     * @param file File
+     * @return position of that id or -1
      */
     private int isMigrated(String userId, File file){
         try {

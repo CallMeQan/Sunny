@@ -16,8 +16,8 @@ public class SlashCommandManager {
         addCommand(new SetCommand());
         addCommand(new TestCommand());
         addCommand(new SlapCommand());
-        addCommand(new MigrateCommand());
-        addCommand(new MigrateGetAsFileCommand());
+        // addCommand(new MigrateCommand());
+        // addCommand(new MigrateGetAsFileCommand());
         // addCommand(new StartTimerCommand());
         // addCommand(new StopTimerCommand());
     }

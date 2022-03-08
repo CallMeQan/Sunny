@@ -14,8 +14,8 @@ import java.util.Objects;
 public class CommandManager {
     private static final ArrayList<Command> COMMANDS = new ArrayList<>();
     public CommandManager(){
-        addCommand(new OsuLinkAccountCommand());
-        addCommand(new RecentCommand());
+        // addCommand(new OsuLinkAccountCommand());
+        // addCommand(new RecentCommand());
     }
 
     private void addCommand(Command cmd) {
