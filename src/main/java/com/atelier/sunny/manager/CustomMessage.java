@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
-import java.text.MessageFormat;
 
 public class CustomMessage {
 
@@ -13,8 +12,8 @@ public class CustomMessage {
             .setTitle("AtelierMC IP")
             .setDescription("__**Địa chỉ để kết nối đến AtelierMC**__")
             .addField("IP Java", "play.ateliermc.tech | play.atelier-mc.ga", true)
-            .addField("IP Bedrock", "bedrock.ateliermc.tech", true)
-            .addField("Phiên bản", "1.16 - 1.18 | Lastest Bedrock version (not Beta)", false)
+            .addField("IP Bedrock", "bedrock.ateliermc.tech | bedrock.atelier-mc.ga | Port: 19132", false)
+            .addField("Phiên bản", "1.17 - 1.18 | Bedrock 1.17.3 trở lên (Không beta)", false)
             .setFooter("AtelierMC")
             .setColor(Color.CYAN)
             .build();
