@@ -9,7 +9,6 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 public abstract class DatabaseUtils {
